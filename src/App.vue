@@ -12,8 +12,10 @@
     <span>5</span>
     <div class="btnWrapper">
       <p class="btn" @click="check(),deleter()">hide</p>
-      <p class="btn" @click="start()">see</p>
-      <p class="btn" @click="toNext() ,reset()">next</p>
+      <p class="btn" v-if="!this.seeNextToggle" @click="toNext() ,reset()">next</p>
+      <p class="btn" v-if="!this.seeNextToggle" @click="start()">see</p>
+      <p class="btn" v-if="this.seeNextToggle" @click="start()">see</p>
+      <p class="btn" v-if="this.seeNextToggle" @click="toNext() ,reset()">next</p>
     </div>
     <h1 class="info">{{scale}} x {{scale}}</h1>
     <div class="wrapper">
@@ -325,7 +327,8 @@ export default {
       shuffledName: [],
       shuffledLike: [],
       next: true,
-      confirm: false
+      confirm: false,
+      seeNextToggle:true
     };
   },
   methods: {
@@ -371,12 +374,16 @@ export default {
     },
     toNext() {
       this.next = !this.next;
+      this.seeNextToggle = !this.seeNextToggle;
     },
     check() {
+      //背景色黒をつけている
       this.confirm = true;
     },
     start() {
       this.confirm = false;
+      this.seeNextToggle = !this.seeNextToggle;
+
     },
     reset() {
       this.confirm = false;
@@ -400,9 +407,14 @@ export default {
     },
     deleter() {
       for (let i = 0; i < this.scale ** 2; i++) {
+        //.see（背景色緑を消している）
         this.pika[i].check = false;
         console.log(this.pika[i].check);
       }
+    },
+    setTimeoutHider(){
+      setTimeout(this.deleter,700);
+      setTimeout(this.check,700);
     }
   },
   created() {
@@ -437,6 +449,8 @@ export default {
       this.setStyle();
       this.pusher();
       this.updateLefts();
+
+      this.setTimeoutHider();
       console.log("watch-next");
     },
     scale() {
@@ -463,9 +477,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #4f6c8a;
+  color: #8a5a4f;
   padding-top: 10px;
-  background-color: rgb(240, 255, 251);
+  background-color: rgb(255, 243, 240);
   height: 770px;
 }
 p {
@@ -485,8 +499,8 @@ p {
   font-size: 20px;
   border-radius: 2px;
   margin-top: 10px;
-  background-color: rgb(191, 255, 208);
-  box-shadow: 0 2px 0 rgb(121, 230, 193);
+  background-color: rgb(255, 203, 191);
+  box-shadow: 0 2px 0 rgb(230, 146, 121);
 }
 .btn:hover {
   cursor: pointer;
@@ -514,7 +528,7 @@ span {
   margin: 0 auto;
   padding-top: 5px;
   padding-left: 5px;
-  background-color: rgb(220, 255, 245);
+  background-color: rgb(255, 228, 220);
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -525,9 +539,9 @@ span {
   margin-right: 5px;
   margin-bottom: 5px;
   padding-left: 20px;
-  background-color: rgb(211, 255, 223);
+  background-color: rgb(255, 218, 211);
 
-  border: 1px solid rgb(121, 230, 193);
+  border: 1px solid rgb(230, 141, 121);
   display: flex;
   justify-content: space-between;
 }
@@ -535,13 +549,14 @@ span {
   cursor: pointer;
 }
 .check {
-  background-color: #4f6c8a;
-  border: 1px solid rgb(72, 155, 255);
+  background-color: #8a5a4f;
+  border: 1px solid rgb(255, 105, 72);
 }
 .see {
-  background-color: rgb(211, 255, 223);
+  background-color: rgb(255, 218, 211);
 
-  border: 1px solid rgb(121, 230, 193);
+  border: 1px solid rgb(230, 141, 121);
+
 }
 .name,
 .like {
