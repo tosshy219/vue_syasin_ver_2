@@ -415,7 +415,23 @@ export default {
     setTimeoutHider(){
       setTimeout(this.deleter,700);
       setTimeout(this.check,700);
-    }
+    },
+    keyAction(e) {
+      console.log('key');
+      if (e.keyCode == 39) {
+        console.log('→');
+        this.next = !this.next;
+        this.reset();
+      } else if (e.keyCode == 40) {
+        console.log('↓');
+        this.confirm = false;
+
+      } else if (e.keyCode == 37) {
+        console.log('←');
+        this.check();
+        this.deleter();
+      }
+    },
   },
   created() {
     this.check();
@@ -427,6 +443,8 @@ export default {
     console.log(this.scale ** 2);
     console.log(this.pika.length);
     console.log("created!");
+    //キーコードによる動作の登録
+    window.addEventListener("keydown", this.keyAction);
   },
   mounted() {
     console.log("mounted");
@@ -463,6 +481,10 @@ export default {
 
       console.log("watch-scale");
     }
+  },
+  beforeDestroy() {
+    //キーコードによる動作の削除
+    window.removeEventListener("keydown", this.keyAction);
   }
 };
 </script>
